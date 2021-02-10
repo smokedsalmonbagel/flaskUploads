@@ -1,11 +1,16 @@
 from flask import Flask, request, jsonify
 from werkzeug.utils import secure_filename
 import os,time,sys
+from pathlib import Path
+
 
 app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = 'uploads/'
 app.config['TEMP_FOLDER'] = 'temp/'
+
+Path(app.config['UPLOAD_FOLDER']).mkdir(parents=True, exist_ok=True)
+Path(app.config['TEMP_FOLDER']).mkdir(parents=True, exist_ok=True)
 
 @app.route("/upload", methods=["POST", "PUT"])
 def upload_process():

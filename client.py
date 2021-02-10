@@ -1,7 +1,7 @@
 import json, time, requests,os,uuid,math
 from random import randint
 from uuid import uuid4
-import os.path
+import os.path,sys,argparse
 
 
 class uploadItem:
@@ -54,7 +54,16 @@ class uploadItem:
         r = requests.post(self.endpoint, data=params)
         ##print r.text
 
+if __name__ == "__main__":
+    
+    parser = argparse.ArgumentParser(description='file to upload')
+    parser.add_argument('file', type=str,
+                        help='path to the file you want to upload.')
+    args = parser.parse_args()
+    if os.path.isfile(args.file):
 
-d = '''{"othermetadata":"something"}'''
-u = uploadItem('test.wav','http://127.0.0.1:5000/upload',d)
-u.upload()
+        d = '''{"othermetadata":"something"}'''
+        u = uploadItem(args.file,'http://127.0.0.1:5000/upload',d)
+        u.upload()
+    else:
+        print(f"File not found {args.file}")
